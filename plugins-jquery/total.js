@@ -1,11 +1,22 @@
-console.log('Carregando...');
+$(function(){
+	
 
-var valorElement = document.getElementById('valor');
-var totalElement = document.getElementById('total');
+	var valorElement = $('#valor');
+    var totalElement = document.getElementById('total');
+    var totalMascara = $('#total-mascara');
 
-valorElement.addEventListener('keyup', function(e){
+    var mascaraConfig = {
+    		prefix: 'R$ ',	
+	  	decimal: ',',
+	  	thousands: '.'
+	  };
+
+  valorElement.on('keyup', function(e){
 	var total = 0;
-	var valor = parseFloat(valorElement.value ? valorElement.value: 0);
+	var valor = valorElement.maskMoney('unmasked')[0];
+
+	
+	//var valor = parseFloat(valorElement.val() ? valorElement.val(): 0);
 
 	if(valor>0 && valor<10){
 		total = valor + valor * 0.3 + 5;
@@ -16,5 +27,22 @@ valorElement.addEventListener('keyup', function(e){
 	else{
 		total = valor;
 	}
-	totalElement.innerHTML = total;
-})
+
+	totalMascara.maskMoney(mascaraConfig);
+	totalMascara.maskMoney('mask', total);
+
+	totalElement.innerHTML = totalMascara.val();
+
+	});
+
+  valorElement.maskMoney(mascaraConfig);
+ 
+
+/*
+  var valorElement = $('#valor');
+  var totalElement = $('#total');
+
+  valorElement.on('keyup', function(){
+  	totalElement.text(valorElement.val());
+  });*/
+});
